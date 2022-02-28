@@ -1,0 +1,7 @@
+**/*.o
+bfs-*
+cc-*
+pr-*
+sssp-*
+sswp-*
+example.*
