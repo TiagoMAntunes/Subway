@@ -6,7 +6,7 @@
 
 
 template <class E>
-Subgraph<E>::Subgraph(uint num_nodes, uint num_edges)
+Subgraph<E>::Subgraph(size_t num_nodes, size_t num_edges)
 {
 	cudaProfilerStart();
 	cudaError_t error;
@@ -32,12 +32,12 @@ Subgraph<E>::Subgraph(uint num_nodes, uint num_edges)
 	this->num_nodes = num_nodes;
 	this->num_edges = num_edges;
 	
-	gpuErrorcheck(cudaMallocHost(&activeNodes, num_nodes * sizeof(uint)));
-	gpuErrorcheck(cudaMallocHost(&activeNodesPointer, (num_nodes+1) * sizeof(uint)));
+	gpuErrorcheck(cudaMallocHost(&activeNodes, num_nodes * sizeof(size_t)));
+	gpuErrorcheck(cudaMallocHost(&activeNodesPointer, (num_nodes+1) * sizeof(size_t)));
 	gpuErrorcheck(cudaMallocHost(&activeEdgeList, num_edges * sizeof(E)));
 	
-	gpuErrorcheck(cudaMalloc(&d_activeNodes, num_nodes * sizeof(unsigned int)));
-	gpuErrorcheck(cudaMalloc(&d_activeNodesPointer, (num_nodes+1) * sizeof(unsigned int)));
+	gpuErrorcheck(cudaMalloc(&d_activeNodes, num_nodes * sizeof(size_t)));
+	gpuErrorcheck(cudaMalloc(&d_activeNodesPointer, (num_nodes+1) * sizeof(size_t)));
 	gpuErrorcheck(cudaMalloc(&d_activeEdgeList, (max_partition_size) * sizeof(E)));
 }
 

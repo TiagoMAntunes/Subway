@@ -17,13 +17,13 @@ string Graph<E>::GetFileExtension(string fileName)
 }
 
 template <>
-void Graph<OutEdgeWeighted>::AssignW8(uint w8, uint index)
+void Graph<OutEdgeWeighted>::AssignW8(uint w8, size_t index)
 {
     edgeList[index].w8 = w8;
 }
 
 template <>
-void Graph<OutEdge>::AssignW8(uint w8, uint index)
+void Graph<OutEdge>::AssignW8(uint w8, size_t index)
 {
     edgeList[index].end = edgeList[index].end; // do nothing
 }
@@ -40,13 +40,13 @@ void Graph<E>::ReadGraph()
 	{
 		ifstream infile (graphFilePath, ios::in | ios::binary);
 	
-		infile.read ((char*)&num_nodes, sizeof(uint));
-		infile.read ((char*)&num_edges, sizeof(uint));
+		infile.read ((char*)&num_nodes, sizeof(size_t));
+		infile.read ((char*)&num_edges, sizeof(size_t));
 		
-		nodePointer = new uint[num_nodes+1];
+		nodePointer = new size_t[num_nodes+1];
 		gpuErrorcheck(cudaMallocHost(&edgeList, (num_edges) * sizeof(E)));
 		
-		infile.read ((char*)nodePointer, sizeof(uint)*num_nodes);
+		infile.read ((char*)nodePointer, sizeof(size_t)*num_nodes);
 		infile.read ((char*)edgeList, sizeof(E)*num_edges);
 		nodePointer[num_nodes] = num_edges;
 	}
@@ -55,9 +55,9 @@ void Graph<E>::ReadGraph()
 		ifstream infile;
 		infile.open(graphFilePath);
 		stringstream ss;
-		uint max = 0;
+		size_t max = 0;
 		string line;
-		uint edgeCounter = 0;
+		size_t edgeCounter = 0;
 		if(isWeighted)
 		{
 			vector<EdgeWeighted> edges;
@@ -83,26 +83,26 @@ void Graph<E>::ReadGraph()
 			infile.close();
 			num_nodes = max + 1;
 			num_edges = edgeCounter;
-			nodePointer = new uint[num_nodes+1];
+			nodePointer = new size_t[num_nodes+1];
 			gpuErrorcheck(cudaMallocHost(&edgeList, (num_edges) * sizeof(E)));
-			uint *degree = new uint[num_nodes];
-			for(uint i=0; i<num_nodes; i++)
+			size_t *degree = new size_t[num_nodes];
+			for(size_t i=0; i<num_nodes; i++)
 				degree[i] = 0;
-			for(uint i=0; i<num_edges; i++)
+			for(size_t i=0; i<num_edges; i++)
 				degree[edges[i].source]++;
 			
-			uint counter=0;
-			for(uint i=0; i<num_nodes; i++)
+			size_t counter=0;
+			for(size_t i=0; i<num_nodes; i++)
 			{
 				nodePointer[i] = counter;
 				counter = counter + degree[i];
 			}
 			nodePointer[num_nodes] = num_edges;
-			uint *outDegreeCounter  = new uint[num_nodes];
-			for (uint i=0; i<num_nodes; i++)
+			size_t *outDegreeCounter  = new size_t[num_nodes];
+			for (size_t i=0; i<num_nodes; i++)
 				outDegreeCounter[i] = 0;
-			uint location;  
-			for(uint i=0; i<num_edges; i++)
+			size_t location;  
+			for(size_t i=0; i<num_edges; i++)
 			{
 				location = nodePointer[edges[i].source] + outDegreeCounter[edges[i].source];
 				edgeList[location].end = edges[i].end;
@@ -140,26 +140,26 @@ void Graph<E>::ReadGraph()
 			infile.close();
 			num_nodes = max + 1;
 			num_edges = edgeCounter;
-			nodePointer = new uint[num_nodes+1];
+			nodePointer = new size_t[num_nodes+1];
 			gpuErrorcheck(cudaMallocHost(&edgeList, (num_edges) * sizeof(E)));
-			uint *degree = new uint[num_nodes];
-			for(uint i=0; i<num_nodes; i++)
+			size_t *degree = new size_t[num_nodes];
+			for(size_t i=0; i<num_nodes; i++)
 				degree[i] = 0;
-			for(uint i=0; i<num_edges; i++)
+			for(size_t i=0; i<num_edges; i++)
 				degree[edges[i].source]++;
 			
-			uint counter=0;
-			for(uint i=0; i<num_nodes; i++)
+			size_t counter=0;
+			for(size_t i=0; i<num_nodes; i++)
 			{
 				nodePointer[i] = counter;
 				counter = counter + degree[i];
 			}
 			nodePointer[num_nodes] = num_edges;
-			uint *outDegreeCounter  = new uint[num_nodes];
-			for (uint i=0; i<num_nodes; i++)
+			size_t *outDegreeCounter  = new size_t[num_nodes];
+			for (size_t i=0; i<num_nodes; i++)
 				outDegreeCounter[i] = 0;
-			uint location;  
-			for(uint i=0; i<num_edges; i++)
+			size_t location;  
+			for(size_t i=0; i<num_edges; i++)
 			{
 				location = nodePointer[edges[i].source] + outDegreeCounter[edges[i].source];
 				edgeList[location].end = edges[i].end;
@@ -180,7 +180,7 @@ void Graph<E>::ReadGraph()
 	
 	outDegree  = new unsigned int[num_nodes];
 	
-	for(uint i=1; i<num_nodes; i++)
+	for(size_t i=1; i<num_nodes; i++)
 		outDegree[i-1] = nodePointer[i] - nodePointer[i-1];
 	outDegree[num_nodes-1] = num_edges - nodePointer[num_nodes-1];
 	

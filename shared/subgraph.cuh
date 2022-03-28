@@ -11,21 +11,21 @@ class Subgraph
 private:
 
 public:
-	uint num_nodes;
-	uint num_edges;
-	uint numActiveNodes;
+	size_t num_nodes;
+	size_t num_edges;
+	size_t numActiveNodes;
 	
-	uint *activeNodes;
-	uint *activeNodesPointer;
+	size_t *activeNodes;
+	size_t *activeNodesPointer;
 	E *activeEdgeList;
 	
-	uint *d_activeNodes;
-	uint *d_activeNodesPointer;
+	size_t *d_activeNodes;
+	size_t *d_activeNodesPointer;
 	E *d_activeEdgeList;
 	
 	ull max_partition_size;
 	
-	Subgraph(uint num_nodes, uint num_edges);
+	Subgraph(size_t num_nodes, size_t num_edges);
 };
 
 #endif	//	SUBGRAPH_HPP

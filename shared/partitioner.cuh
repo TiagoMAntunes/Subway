@@ -12,10 +12,10 @@ private:
 
 public:
 	uint numPartitions;
-	vector<uint> fromNode;
-	vector<uint> fromEdge;
-	vector<uint> partitionNodeSize;
-	vector<uint> partitionEdgeSize;
+	vector<size_t> fromNode;
+	vector<size_t> fromEdge;
+	vector<size_t> partitionNodeSize;
+	vector<size_t> partitionEdgeSize;
 	Partitioner();
     void partition(Subgraph<E> &subgraph, uint numActiveNodes);
     void reset();

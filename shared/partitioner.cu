@@ -13,13 +13,13 @@ void Partitioner<E>::partition(Subgraph<E> &subgraph, uint numActiveNodes)
 {
 	reset();
 	
-	unsigned int from, to;
-	unsigned int left, right, mid;
-	unsigned int partitionSize;
-	unsigned int numNodesInPartition;
-	unsigned int numPartitionedEdges;
+	size_t from, to;
+	size_t left, right, mid;
+	size_t partitionSize;
+	size_t numNodesInPartition;
+	size_t numPartitionedEdges;
 	bool foundTo;
-	unsigned int accurCount;
+	size_t accurCount;
 	
 	
 	from = 0;

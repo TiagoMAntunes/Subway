@@ -4,11 +4,11 @@
 #include "subgraph.cuh"
 
 
-__global__ void bfs_kernel(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void bfs_kernel(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
 							unsigned int *value,
@@ -124,10 +124,10 @@ __global__ void pr_async(unsigned int numNodes,
 							bool *finished,
 							float acc);	
 
-__global__ void clearLabel(unsigned int * activeNodes, bool *label, unsigned int size, unsigned int from);
+__global__ void clearLabel(size_t * activeNodes, bool *label, size_t size, size_t from);
 
-__global__ void mixLabels(unsigned int * activeNodes, bool *label1, bool *label2, unsigned int size, unsigned int from);
+__global__ void mixLabels(size_t * activeNodes, bool *label1, bool *label2, size_t size, size_t from);
 
-__global__ void moveUpLabels(unsigned int * activeNodes, bool *label1, bool *label2, unsigned int size, unsigned int from);
+__global__ void moveUpLabels(size_t * activeNodes, bool *label1, bool *label2, size_t size, size_t from);
 
 

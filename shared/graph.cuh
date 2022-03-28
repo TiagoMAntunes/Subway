@@ -13,9 +13,9 @@ public:
 	string graphFilePath;
 	bool isWeighted;
 	bool isLarge;
-	uint num_nodes;
-	uint num_edges;
-	uint *nodePointer;
+	size_t num_nodes;
+	size_t num_edges;
+	size_t *nodePointer;
 	E *edgeList;
 	uint *outDegree;
 	bool *label1;
@@ -28,7 +28,7 @@ public:
 	string graphFormat;
     Graph(string graphFilePath, bool isWeighted);
     string GetFileExtension(string fileName);
-    void AssignW8(uint w8, uint index);
+    void AssignW8(uint w8, size_t index);
     void ReadGraph();
 };
 
@@ -41,9 +41,9 @@ public:
 	string graphFilePath;
 	bool isWeighted;
 	bool isLarge;
-	uint num_nodes;
-	uint num_edges;
-	uint *nodePointer;
+	size_t num_nodes;
+	size_t num_edges;
+	size_t *nodePointer;
 	E *edgeList;
 	uint *outDegree;
 	float *value;
@@ -54,7 +54,7 @@ public:
 	string graphFormat;
     GraphPR(string graphFilePath, bool isWeighted);
     string GetFileExtension(string fileName);
-    void AssignW8(uint w8, uint index);
+    void AssignW8(uint w8, size_t index);
     void ReadGraph();
 };
 

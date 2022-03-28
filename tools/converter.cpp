@@ -40,6 +40,7 @@ int main(int argc, char** argv)
 		Edge newEdge;
 		while(getline( infile, line ))
 		{
+			if (line[0] == '#' || line[0] == '%') continue;
 			ss.str("");
 			ss.clear();
 			ss << line;

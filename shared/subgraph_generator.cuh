@@ -16,13 +16,13 @@ private:
 
 public:
 	unsigned int *activeNodesLabeling;
-	unsigned int *activeNodesDegree;
-	unsigned int *prefixLabeling;
-	unsigned int *prefixSumDegrees;
+	size_t *activeNodesDegree;
+	size_t *prefixLabeling;
+	size_t *prefixSumDegrees;
 	unsigned int *d_activeNodesLabeling;
-	unsigned int *d_activeNodesDegree;
-	unsigned int *d_prefixLabeling;
-	unsigned int *d_prefixSumDegrees;
+	size_t *d_activeNodesDegree;
+	size_t *d_prefixLabeling;
+	size_t *d_prefixSumDegrees;
 	SubgraphGenerator(Graph<E> &graph);
 	SubgraphGenerator(GraphPR<E> &graph);
 	void generate(Graph<E> &graph, Subgraph<E> &subgraph);

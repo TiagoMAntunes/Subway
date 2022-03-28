@@ -25,7 +25,7 @@ int main(int argc, char** argv)
 	float readtime = timer.Finish();
 	cout << "Graph Reading finished in " << readtime/1000 << " (s).\n";
 	
-	for(unsigned int i=0; i<graph.num_nodes; i++)
+	for(size_t i=0; i<graph.num_nodes; i++)
 	{
 		graph.value[i] = DIST_INFINITY;
 		graph.label1[i] = false;
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 	graph.label2[arguments.sourceNode] = true;
 
 
-	gpuErrorcheck(cudaMemcpy(graph.d_outDegree, graph.outDegree, graph.num_nodes * sizeof(unsigned int), cudaMemcpyHostToDevice));
+	gpuErrorcheck(cudaMemcpy(graph.d_outDegree, graph.outDegree, graph.num_nodes * sizeof(size_t), cudaMemcpyHostToDevice));
 	gpuErrorcheck(cudaMemcpy(graph.d_value, graph.value, graph.num_nodes * sizeof(unsigned int), cudaMemcpyHostToDevice));
 	gpuErrorcheck(cudaMemcpy(graph.d_label1, graph.label1, graph.num_nodes * sizeof(bool), cudaMemcpyHostToDevice));
 	gpuErrorcheck(cudaMemcpy(graph.d_label2, graph.label2, graph.num_nodes * sizeof(bool), cudaMemcpyHostToDevice));
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 	
 	gpuErrorcheck(cudaMemcpy(graph.value, graph.d_value, graph.num_nodes*sizeof(uint), cudaMemcpyDeviceToHost));
 	
-	utilities::PrintResults(graph.value, min(30, graph.num_nodes));
+	utilities::PrintResults(graph.value, min(30, (uint) graph.num_nodes));
 			
 	if(arguments.hasOutput)
 		utilities::SaveResults(arguments.output, graph.value, graph.num_nodes);

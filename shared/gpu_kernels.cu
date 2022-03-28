@@ -6,11 +6,11 @@
 #include "subgraph.cuh"
 
 
-__global__ void bfs_kernel(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void bfs_kernel(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
 							unsigned int *value,
@@ -31,15 +31,15 @@ __global__ void bfs_kernel(unsigned int numNodes,
 
 		unsigned int sourceWeight = value[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		//printf("******* %i\n", thisFrom);
 		
 		unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			//finalDist = sourceWeight + edgeList[i].w8;
 			finalDist = sourceWeight + 1;
@@ -503,7 +503,7 @@ __global__ void pr_async(unsigned int numNodes,
 
 
 
-__global__ void clearLabel(unsigned int * activeNodes, bool *label, unsigned int size, unsigned int from)
+__global__ void clearLabel(size_t * activeNodes, bool *label, size_t size, size_t from)
 {
 	unsigned int id = blockDim.x * blockIdx.x + threadIdx.x;
 	if(id < size)
@@ -512,7 +512,7 @@ __global__ void clearLabel(unsigned int * activeNodes, bool *label, unsigned int
 	}
 }
 
-__global__ void mixLabels(unsigned int * activeNodes, bool *label1, bool *label2, unsigned int size, unsigned int from)
+__global__ void mixLabels(size_t * activeNodes, bool *label1, bool *label2, size_t size, size_t from)
 {
 	unsigned int id = blockDim.x * blockIdx.x + threadIdx.x;
 	if(id < size){
@@ -522,7 +522,7 @@ __global__ void mixLabels(unsigned int * activeNodes, bool *label1, bool *label2
 	}
 }
 
-__global__ void moveUpLabels(unsigned int * activeNodes, bool *label1, bool *label2, unsigned int size, unsigned int from)
+__global__ void moveUpLabels(size_t * activeNodes, bool *label1, bool *label2, size_t size, size_t from)
 {
 	unsigned int id = blockDim.x * blockIdx.x + threadIdx.x;
 	unsigned int nID;
