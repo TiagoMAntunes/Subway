@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 	
 	gpuErrorcheck(cudaMemcpy(graph.value, graph.d_value, graph.num_nodes*sizeof(float), cudaMemcpyDeviceToHost));
 	
-	utilities::PrintResults(graph.value, min(30, graph.num_nodes));
+	utilities::PrintResults(graph.value, min(30, (uint)graph.num_nodes));
 
 			
 	if(arguments.hasOutput)

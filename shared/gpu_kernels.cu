@@ -57,11 +57,11 @@ __global__ void bfs_kernel(size_t numNodes,
 	}
 }
 
-__global__ void cc_kernel(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void cc_kernel(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
 							unsigned int *dist,
@@ -82,15 +82,15 @@ __global__ void cc_kernel(unsigned int numNodes,
 		
 		unsigned int sourceWeight = dist[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		//printf("******* %i\n", thisFrom);
 		
 		//unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			//finalDist = sourceWeight + edgeList[i].w8;
 			if(sourceWeight < dist[edgeList[i].end])
@@ -108,11 +108,11 @@ __global__ void cc_kernel(unsigned int numNodes,
 }
 
 
-__global__ void sssp_kernel(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void sssp_kernel(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdgeWeighted *edgeList,
 							unsigned int *outDegree,
 							unsigned int *dist,
@@ -133,15 +133,15 @@ __global__ void sssp_kernel(unsigned int numNodes,
 
 		unsigned int sourceWeight = dist[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		//printf("******* %i\n", thisFrom);
 		
 		unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			finalDist = sourceWeight + edgeList[i].w8;
 			if(finalDist < dist[edgeList[i].end])
@@ -158,11 +158,11 @@ __global__ void sssp_kernel(unsigned int numNodes,
 	}
 }
 
-__global__ void sswp_kernel(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void sswp_kernel(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdgeWeighted *edgeList,
 							unsigned int *outDegree,
 							unsigned int *dist,
@@ -183,15 +183,15 @@ __global__ void sswp_kernel(unsigned int numNodes,
 		
 		unsigned int sourceWeight = dist[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		//printf("******* %i\n", thisFrom);
 		
 		unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			finalDist = min(sourceWeight, edgeList[i].w8);
 			if(finalDist > dist[edgeList[i].end])
@@ -208,11 +208,11 @@ __global__ void sswp_kernel(unsigned int numNodes,
 	}
 }
 
-__global__ void pr_kernel(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void pr_kernel(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
 							float *dist,
@@ -238,10 +238,10 @@ __global__ void pr_kernel(unsigned int numNodes,
 				
 				float sourcePR = ((float) thisDelta / degree) * 0.85;
 
-				unsigned int thisfrom = activeNodesPointer[from+tId]-numPartitionedEdges;
-				unsigned int thisto = thisfrom + degree;
+				size_t thisfrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+				size_t thisto = thisfrom + degree;
 				
-				for(unsigned int i=thisfrom; i<thisto; i++)
+				for(size_t i=thisfrom; i<thisto; i++)
 				{
 					atomicAdd(&delta[edgeList[i].end], sourcePR);
 				}				
@@ -254,11 +254,11 @@ __global__ void pr_kernel(unsigned int numNodes,
 }
 
 
-__global__ void bfs_async(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void bfs_async(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
 							unsigned int *dist,
@@ -279,15 +279,15 @@ __global__ void bfs_async(unsigned int numNodes,
 		
 		unsigned int sourceWeight = dist[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		//printf("******* %i\n", thisFrom);
 		
 		unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			//finalDist = sourceWeight + edgeList[i].w8;
 			finalDist = sourceWeight + 1;
@@ -305,11 +305,11 @@ __global__ void bfs_async(unsigned int numNodes,
 	}
 }
 
-__global__ void sssp_async(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void sssp_async(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdgeWeighted *edgeList,
 							unsigned int *outDegree,
 							unsigned int *dist,
@@ -330,15 +330,15 @@ __global__ void sssp_async(unsigned int numNodes,
 		
 		unsigned int sourceWeight = dist[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		//printf("******* %i\n", thisFrom);
 		
 		unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			finalDist = sourceWeight + edgeList[i].w8;
 			if(finalDist < dist[edgeList[i].end])
@@ -355,11 +355,11 @@ __global__ void sssp_async(unsigned int numNodes,
 	}
 }
 
-__global__ void sswp_async(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void sswp_async(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdgeWeighted *edgeList,
 							unsigned int *outDegree,
 							unsigned int *dist,
@@ -380,14 +380,14 @@ __global__ void sswp_async(unsigned int numNodes,
 		
 		unsigned int sourceWeight = dist[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		
 		unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			finalDist = min(sourceWeight, edgeList[i].w8);
 			if(finalDist > dist[edgeList[i].end])
@@ -405,11 +405,11 @@ __global__ void sswp_async(unsigned int numNodes,
 }
 
 
-__global__ void cc_async(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void cc_async(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
 							unsigned int *dist,
@@ -430,15 +430,15 @@ __global__ void cc_async(unsigned int numNodes,
 
 		unsigned int sourceWeight = dist[id];
 
-		unsigned int thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+		size_t thisFrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 		unsigned int degree = outDegree[id];
-		unsigned int thisTo = thisFrom + degree;
+		size_t thisTo = thisFrom + degree;
 		
 		//printf("******* %i\n", thisFrom);
 		
 		//unsigned int finalDist;
 		
-		for(unsigned int i=thisFrom; i<thisTo; i++)
+		for(size_t i=thisFrom; i<thisTo; i++)
 		{	
 			//finalDist = sourceWeight + edgeList[i].w8;
 			if(sourceWeight < dist[edgeList[i].end])
@@ -456,11 +456,11 @@ __global__ void cc_async(unsigned int numNodes,
 }
 
 
-__global__ void pr_async(unsigned int numNodes,
-							unsigned int from,
-							unsigned int numPartitionedEdges,
-							unsigned int *activeNodes,
-							unsigned int *activeNodesPointer,
+__global__ void pr_async(size_t numNodes,
+							size_t from,
+							size_t numPartitionedEdges,
+							size_t *activeNodes,
+							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
 							float *dist,
@@ -486,10 +486,10 @@ __global__ void pr_async(unsigned int numNodes,
 				
 				float sourcePR = ((float) thisDelta / degree) * 0.85;
 
-				unsigned int thisfrom = activeNodesPointer[from+tId]-numPartitionedEdges;
-				unsigned int thisto = thisfrom + degree;
+				size_t thisfrom = activeNodesPointer[from+tId]-numPartitionedEdges;
+				size_t thisto = thisfrom + degree;
 				
-				for(unsigned int i=thisfrom; i<thisto; i++)
+				for(size_t i=thisfrom; i<thisto; i++)
 				{
 					atomicAdd(&delta[edgeList[i].end], sourcePR);
 				}				
