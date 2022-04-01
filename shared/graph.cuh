@@ -48,9 +48,11 @@ public:
 	uint *outDegree;
 	float *value;
 	float *delta;
+	float *sum;
 	uint *d_outDegree;
 	float *d_value;
 	float *d_delta;
+	float *d_sum;
 	string graphFormat;
     GraphPR(string graphFilePath, bool isWeighted);
     string GetFileExtension(string fileName);

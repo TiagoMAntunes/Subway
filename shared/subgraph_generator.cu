@@ -22,18 +22,17 @@ __global__ void prePrefix(unsigned int *activeNodesLabeling, size_t *activeNodes
 }
 
 __global__ void prePrefix(unsigned int *activeNodesLabeling, size_t *activeNodesDegree, 
-							unsigned int *outDegree, float *delta, size_t numNodes, float acc)
+							unsigned int *outDegree, float *delta, float * sum, float * value, size_t numNodes, float acc, float alpha)
 {
 	size_t id = blockDim.x * blockIdx.x + threadIdx.x;
 	if(id < numNodes){
-		if(delta[id] > acc)
-		{
-			activeNodesLabeling[id] = 1;
-		}
-		else
-		{
-			activeNodesLabeling[id] = 0;
-		}
+		float res = sum[id] * alpha;
+		sum[id] = 0;
+		delta[id] = res;
+		value[id] += res;
+		
+		activeNodesLabeling[id] = res > acc;
+		
 		activeNodesDegree[id] = 0;
 		if(activeNodesLabeling[id] == 1)
 			activeNodesDegree[id] = outDegree[id];	
@@ -206,12 +205,12 @@ void SubgraphGenerator<E>::generate(Graph<E> &graph, Subgraph<E> &subgraph)
 
 
 template <class E>
-void SubgraphGenerator<E>::generate(GraphPR<E> &graph, Subgraph<E> &subgraph, float acc)
+void SubgraphGenerator<E>::generate(GraphPR<E> &graph, Subgraph<E> &subgraph, float acc, float alpha)
 {
 	//std::chrono::time_point<std::chrono::system_clock> startDynG, finishDynG;
 	//startDynG = std::chrono::system_clock::now();
 	
-	prePrefix<<<graph.num_nodes/512+1, 512>>>(d_activeNodesLabeling, d_activeNodesDegree, graph.d_outDegree, graph.d_delta, graph.num_nodes, acc);
+	prePrefix<<<graph.num_nodes/512+1, 512>>>(d_activeNodesLabeling, d_activeNodesDegree, graph.d_outDegree, graph.d_delta, graph.d_sum, graph.d_value, graph.num_nodes, acc, alpha);
 		
 	thrust::device_ptr<unsigned int> ptr_labeling(d_activeNodesLabeling);
 	thrust::device_ptr<size_t> ptr_labeling_prefixsum(d_prefixLabeling);

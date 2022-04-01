@@ -33,6 +33,7 @@ int main(int argc, char** argv)
 	
 	float initPR = 0.15;
 	float acc = 0.01;
+	float alpha = 0.85;
 	
 	for(unsigned int i=0; i<graph.num_nodes; i++)
 	{
@@ -51,7 +52,7 @@ int main(int argc, char** argv)
 	
 	SubgraphGenerator<OutEdge> subgen(graph);
 	
-	subgen.generate(graph, subgraph, acc);	
+	subgen.generate(graph, subgraph, acc, alpha);	
 
 	Partitioner<OutEdge> partitioner;
 	
@@ -107,7 +108,7 @@ int main(int argc, char** argv)
 			cout << itr << ((itr>1) ? " Inner Iterations" : " Inner Iteration") << " in Global Iteration " << gItr << ", Partition " << i  << endl;			
 		}
 		
-		subgen.generate(graph, subgraph, acc);
+		subgen.generate(graph, subgraph, acc, alpha);
 			
 	}	
 	

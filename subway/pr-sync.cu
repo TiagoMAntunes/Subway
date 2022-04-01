@@ -30,13 +30,15 @@ int main(int argc, char** argv)
 	//for(unsigned int i=0; i<100; i++)
 	//	cout << graph.edgeList[i].end << " " << graph.edgeList[i].w8;
 	
-	float initPR = 0.15;
+	// float initPR = 0.15;
+	float alpha = 0.85;
 	float acc = 0.01;
 	
 	for(unsigned int i=0; i<graph.num_nodes; i++)
 	{
-		graph.delta[i] = initPR;
-		graph.value[i] = 0;
+		graph.value[i] = -alpha;
+		graph.delta[i] = 0;
+		graph.sum[i] = 1 / 0.85;
 	}
 	//graph.value[arguments.sourceNode] = 0;
 	//graph.label[arguments.sourceNode] = true;
@@ -45,12 +47,13 @@ int main(int argc, char** argv)
 	gpuErrorcheck(cudaMemcpy(graph.d_outDegree, graph.outDegree, graph.num_nodes * sizeof(unsigned int), cudaMemcpyHostToDevice));
 	gpuErrorcheck(cudaMemcpy(graph.d_value, graph.value, graph.num_nodes * sizeof(float), cudaMemcpyHostToDevice));
 	gpuErrorcheck(cudaMemcpy(graph.d_delta, graph.delta, graph.num_nodes * sizeof(float), cudaMemcpyHostToDevice));
+	gpuErrorcheck(cudaMemcpy(graph.d_sum, graph.sum, graph.num_nodes * sizeof(float), cudaMemcpyHostToDevice));
 	
 	Subgraph<OutEdge> subgraph(graph.num_nodes, graph.num_edges);
 	
 	SubgraphGenerator<OutEdge> subgen(graph);
 	
-	subgen.generate(graph, subgraph, acc);	
+	subgen.generate(graph, subgraph, acc, alpha);	
 
 	Partitioner<OutEdge> partitioner;
 	
@@ -79,7 +82,7 @@ int main(int argc, char** argv)
 												subgraph.d_activeNodesPointer,
 												subgraph.d_activeEdgeList,
 												graph.d_outDegree,
-												graph.d_value,
+												graph.d_sum,
 												graph.d_delta,
 												acc);		
 
@@ -89,8 +92,7 @@ int main(int argc, char** argv)
 	
 		}
 		
-		subgen.generate(graph, subgraph, acc);
-			
+		subgen.generate(graph, subgraph, acc, alpha);
 	}	
 	
 	float runtime = timer.Finish();

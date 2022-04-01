@@ -215,7 +215,7 @@ __global__ void pr_kernel(size_t numNodes,
 							size_t *activeNodesPointer,
 							OutEdge *edgeList,
 							unsigned int *outDegree,
-							float *dist,
+							float *sum,
 							float *delta,
 							//bool *finished,
 							float acc)
@@ -226,30 +226,19 @@ __global__ void pr_kernel(size_t numNodes,
 	{
 		unsigned int id = activeNodes[from + tId];
 		unsigned int degree = outDegree[id];
-		float thisDelta = delta[id];
 
-		if(thisDelta > acc)
-		{
-			dist[id] += thisDelta;
-			
-			if(degree != 0)
-			{
-				//*finished = false;
-				
-				float sourcePR = ((float) thisDelta / degree) * 0.85;
+		if (degree) {
+			float val = delta[id] / degree;
 
+			if (val > acc) {
 				size_t thisfrom = activeNodesPointer[from+tId]-numPartitionedEdges;
 				size_t thisto = thisfrom + degree;
-				
-				for(size_t i=thisfrom; i<thisto; i++)
-				{
-					atomicAdd(&delta[edgeList[i].end], sourcePR);
-				}				
+
+				for (size_t i=thisfrom; i < thisto; i++) {
+					atomicAdd(&sum[edgeList[i].end], val);
+				}
 			}
-			
-			atomicAdd(&delta[id], -thisDelta);
 		}
-		
 	}
 }
 

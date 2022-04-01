@@ -26,7 +26,7 @@ public:
 	SubgraphGenerator(Graph<E> &graph);
 	SubgraphGenerator(GraphPR<E> &graph);
 	void generate(Graph<E> &graph, Subgraph<E> &subgraph);
-	void generate(GraphPR<E> &graph, Subgraph<E> &subgraph, float acc);
+	void generate(GraphPR<E> &graph, Subgraph<E> &subgraph, float acc, float alpha);
 };
 
 #endif	//	SUBGRAPH_GENERATOR_HPP

@@ -388,10 +388,12 @@ void GraphPR<E>::ReadGraph()
 
 	value  = new float[num_nodes];
 	delta  = new float[num_nodes];
+	sum = new float[num_nodes];
 	
 	gpuErrorcheck(cudaMalloc(&d_outDegree, num_nodes * sizeof(unsigned int)));
 	gpuErrorcheck(cudaMalloc(&d_value, num_nodes * sizeof(float)));
 	gpuErrorcheck(cudaMalloc(&d_delta, num_nodes * sizeof(float)));
+	gpuErrorcheck(cudaMalloc(&d_sum, num_nodes * sizeof(float)));
 	
 	
 	cout << "Done reading.\n";
